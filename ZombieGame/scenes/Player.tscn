@@ -1,0 +1,126 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/player/bkspr01.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://assets/objects/onlyObjects_default.png" type="Texture" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 11.9651
+height = 0.0
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 132, 417, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 417, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 132, 0, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 139, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 278, 132, 139 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 132, 278, 132, 139 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
+"loop": false,
+"name": "aiming",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "walking",
+"speed": 4.0
+} ]
+
+[sub_resource type="Animation" id=10]
+resource_name = "muzzle_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("MuzzleFlash:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MuzzleFlash:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.25, 0.75 ) ]
+}
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 381.537, 532.352 )
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.282745, 1.86755 )
+rotation = 1.19031
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 9 )
+animation = "idle"
+offset = Vector2( -10.189, -7.002 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 0.38028, 2.15527 )
+enabled = true
+cast_to = Vector2( 1500, 0 )
+
+[node name="AttackCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="MuzzleFlash" type="Sprite" parent="."]
+visible = false
+position = Vector2( 45.9834, -3.91272 )
+rotation = -1.5708
+scale = Vector2( 0.25, 0.75 )
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 324, 334, 20, 25 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/muzzle_flash = SubResource( 10 )
